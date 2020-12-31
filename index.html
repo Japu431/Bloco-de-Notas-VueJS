@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VueJS</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body>
+    <div id="app"></div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+      new Vue({
+        el: "#app",
+        template: `
+        <div>
+          <h1>Bloco de notas</h1>
+            <div class="input">
+              <input type="text" name="name" id="name" placeholder="Nome da Atividade" v-model="name" autocomplete="off"/>
+                <input type="text" name="tela" id="tela" placeholder="Insira as suas notas" v-model="message"autocomplete="off" />
+                  <button id="send"  v-on:click="addComment">Inserir</button>
+                </div>
+                <br>
+              <hr />
+              <div id="tela" v-for="comment in comments">
+                <p>Nome: {{ comment.name }}</p>
+                 <p>Anotação: {{ comment.message }}</p>
+                 <a href="#" v-on:click="removeComment(this)">Excluir</a>
+                 <hr />
+                </div>
+              <br>
+            </div>
+          `,
+
+        data() {
+          return {
+            comments: [],
+            name: "",
+            message: "",
+          };
+        },
+        LocalStorage() {
+          if (this.comments == "") {
+            return;
+          } else {
+            this.comments = localStorage.comments;
+          }
+        },
+        methods: {
+          addComment() {
+            this.comments.push({
+              name: this.name,
+              message: this.message,
+            });
+            localStorage.setItem("comments", comments);
+            (this.name = ""), (this.message = "");
+          },
+          removeComment(index) {
+            this.comments.splice(index, 1);
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
